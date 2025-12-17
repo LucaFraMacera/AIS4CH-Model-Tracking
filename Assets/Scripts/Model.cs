@@ -2,23 +2,47 @@
 using System;
 
 [Serializable]
-public class Model{
+public class Interaction {
 
+    public bool rotateX;
+
+    public bool rotateY;
+
+    public bool rotateZ;
+
+    public bool transformX;
+
+    public bool transformY;
+
+    public bool transformZ;
+
+    override public string ToString(){
+        return $"Rotation= X:{rotateX}, Y:{rotateY}, Z:{rotateZ}; Transform = X:{transformX}, Y:{transformY}, Z:{transformZ}";
+    }
+
+}
+
+
+[Serializable]
+public class Model{
     public string id;
 
     public string name;
 
+    public float xOffset;
+
+    public float yOffset;
+
+    public float zOffset;
+
+    public long fileSize;
+
     public string base64Content;
 
-    public long xoffset;
+    public Interaction interaction;
 
-    public long yoffset;
-
-    public long zoffset;
-
-    
     override public string ToString(){
-        return $"ID: {this.id}, Name: {this.name}, Xoffset: {this.xoffset}, Yoffset: {this.yoffset}, Zoffset: {this.zoffset}";
+        return $"ID: {this.id}, Name: {this.name}, XOffset: {this.xOffset}, YOffset: {this.yOffset}, ZOffset: {this.zOffset}, fileSize: {this.fileSize}, interaction: {this.interaction}";
     }
-
 }
+

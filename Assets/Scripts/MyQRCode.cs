@@ -19,12 +19,23 @@ public class MyQRCode : MonoBehaviour
     TMP_Text _trackingStateText;
 
     [SerializeField]
+    TMP_Text _modelNameText;
+
+    [SerializeField]
+    TMP_Text _modelDescriptionText;
+
+    [SerializeField]
     RectTransform _background;
 
     MRUKTrackable _trackable;
 
+    bool loading = false;
+
+    Model model;
+
     public void Initialize(MRUKTrackable trackable)
     {
+        this.loading = true;
         if (trackable.MarkerPayloadString is { } str)
         {
             _text.text = $"\"{str}\"";
@@ -37,6 +48,9 @@ public class MyQRCode : MonoBehaviour
         {
             _text.text = "(no payload)";
         }
+
+        this._modelNameText.text = "";
+        this._modelDescriptionText.text = "";
 
         _trackable = trackable;
         SetTrackingStateText();
@@ -57,9 +71,24 @@ public class MyQRCode : MonoBehaviour
         _background.sizeDelta = size;
     }
 
-    void Update() => SetTrackingStateText();
+    void Update(){
+        if(this.model != null) {
+            this._modelNameText.text = model.name;
+            this._modelDescriptionText.text = model.ToString();
+        } else if(loading) {
+            this._modelNameText.text = "Caricando...";
+        } else {
+            this._modelNameText.text = "Modello non trovato...";
+        }
+        SetTrackingStateText();
+    }
 
     void SetTrackingStateText() => _trackingStateText.text = _trackable
         ? _trackable.IsTracked ? "Tracked" : "Untracked"
         : "(none)";
+
+    public void SetModel(Model model) {
+        this.loading = false;
+        this.model = model;
+    }
 }

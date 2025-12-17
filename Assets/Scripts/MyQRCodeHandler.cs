@@ -10,11 +10,12 @@ public class MyQRCodeHandler : MonoBehaviour
     [SerializeField]
     MyQRCode _qrCodePrefab;
 
-    public void Initialize(MRUKTrackable trackable, GameObject model) {
+    public MyQRCode Initialize(MRUKTrackable trackable) {
         var instance = Instantiate(_qrCodePrefab, trackable.transform);
         var qrCode = instance.GetComponent<MyQRCode>();
+        instance.GetComponent<Bounded2DVisualizer>().Initialize(trackable);
         qrCode.Initialize(trackable);
-        instance.GetComponent<Bounded2DVisualizer>().Initialize(trackable, model);
+        return instance;
     }
 
     // Start is called before the first frame update

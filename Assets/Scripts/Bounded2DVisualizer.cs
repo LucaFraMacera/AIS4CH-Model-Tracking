@@ -20,10 +20,9 @@ public class Bounded2DVisualizer : MonoBehaviour
 
         GameObject _renderedModel;
 
-        public void Initialize(MRUKTrackable trackable, GameObject model)
+        public void Initialize(MRUKTrackable trackable)
         {
             _trackable = trackable;
-            _renderedModel = model;
 
             if (trackable.PlaneBoundary2D == null && trackable.PlaneRect == null)
             {
@@ -64,6 +63,8 @@ public class Bounded2DVisualizer : MonoBehaviour
                 _lineRenderer.SetPosition(1, new Vector3(_box.x + _box.width, _box.y, 0));
                 _lineRenderer.SetPosition(2, new Vector3(_box.x + _box.width, _box.y + _box.height, 0));
                 _lineRenderer.SetPosition(3, new Vector3(_box.x, _box.y + _box.height, 0));
+            } else {
+                _lineRenderer.gameObject.SetActive(false);
             }
             
         }
@@ -71,11 +72,7 @@ public class Bounded2DVisualizer : MonoBehaviour
         void UpdateCanvasPosition(){
              if(_trackable.IsTracked) {  
                 _canvasRect.gameObject.SetActive(true);
-                _canvasRect.localPosition = new Vector3(
-                    x: _box.center.x + _canvasOffset.x * _canvasRect.localScale.x,
-                    y: _box.yMin + _canvasOffset.y * _canvasRect.localScale.y,
-                    z: _canvasOffset.z * _canvasRect.localScale.z
-                );
+                _canvasRect.transform.position = _trackable.transform.position + _canvasOffset;
             }
         }
 
@@ -93,6 +90,10 @@ public class Bounded2DVisualizer : MonoBehaviour
             _lineRenderer.gameObject.SetActive(false);
             _canvasRect.gameObject.SetActive(false);
             qrCodeCenter.SetActive(false);
+        }
+
+        public void SetModel(GameObject model) {
+            _renderedModel = model;
         }
 
     }

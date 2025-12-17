@@ -1,18 +1,19 @@
 using GLTFast;
 using System;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class GLTFHandler{
 
-    public async static void Instantiate(byte[] modelData, GameObject container=null){
-
-        var gltf = new GltfImport();
-        bool success = await gltf.Load(modelData, new Uri("https://example.com/virtualBase/"));
+    public async static Task<bool> Instantiate(byte[] modelData, GameObject container=null){
+        if(!container) {
+            container = new GameObject(Guid.NewGuid().ToString());
+        }
+        IDeferAgent deferAgent = container.AddComponent<TimeBudgetPerFrameDeferAgent>();
+        var gltf = new GltfImport(null, deferAgent);
+        bool success = await gltf.Load(modelData);
         if (success)
         {
-            if(!container) {
-                container = new GameObject(Guid.NewGuid().ToString());
-            }
             await gltf.InstantiateMainSceneAsync(container.transform);
             Debug.Log("Model loaded successfully");
         }
@@ -20,6 +21,7 @@ public class GLTFHandler{
         {
             Debug.LogError("❌ Failed to parse GLB data");
         }
+        return true;
     }
 
 }

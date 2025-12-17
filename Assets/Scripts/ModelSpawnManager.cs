@@ -2,47 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Threading.Tasks;
 
 public class ModelSpawnManager : MonoBehaviour
 {
 
-    public List<GameObject> models;
+   private static ModelSpawnManager instance;
 
-    public List<string> modelKeys;
+   [SerializeField]
+   GameObject modelPreviewPrefab;
 
-    // Start is called before the first frame update
-    void Start()
+    public static ModelSpawnManager Instance
     {
-        
-    }
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindAnyObjectByType<ModelSpawnManager>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+                if (instance == null)
+                {
+                    GameObject obj = new GameObject("ModelSpawnManager");
+                    instance = obj.AddComponent<ModelSpawnManager>();
+                }
+            }
 
-    public GameObject Spawn(string modelKey, Vector3 position) {
-       int keyPos = -1;
-       for(int i = 0; i < modelKeys.Count; i++) {
-        if(modelKeys[i] == modelKey) {
-            keyPos = i;
+            return instance;
         }
-       }
-       if(keyPos < 0) {
-        return null;
-       }
-       return Instantiate(models[keyPos], position, Quaternion.identity);
+    }
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
     }
 
     public async void Spawn(string url, GameObject container) {
-        Model model = await Client.Get(url);
+        Debug.LogWarning($"Requesting model at {url}");
+        long startTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Model model = await Client.Get<Model>(url);
+        long requestTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - startTime;
+        Debug.LogWarning($"Model found. Request time: {requestTime} seconds");
         if(model == null) {
             return;
         }
         Debug.Log($"Model retrieved from API : {model}");
-        container.transform.position = container.transform.position + new Vector3(model.xoffset, model.yoffset, model.zoffset);
-        GLTFHandler.Instantiate(System.Convert.FromBase64String(model.base64Content), container);
+        container.transform.position = container.transform.position + new Vector3(model.xOffset, model.yOffset, model.zOffset);
+        StartCoroutine(RenderModel(model, container));
+        
+    }
+
+    public IEnumerator RenderModel(Model model, GameObject container){
+        Debug.LogWarning("Starting to render model");
+        byte[] content = Convert.FromBase64String(model.base64Content);
+        long renderStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        GameObject preview = Instantiate(modelPreviewPrefab, container.transform);
+        Task<bool> renderModelTask = GLTFHandler.Instantiate(content, container);
+        yield return new WaitUntil(()=>renderModelTask.IsCompleted);
+        Destroy(preview);
+        long renderTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - renderStartTime;
+        Debug.LogWarning($"Model rendered. Time required: {renderTime} seconds");
+        ModelInteractionManager.Instance.Spawn(container, model.interaction);
     }
 
 }
