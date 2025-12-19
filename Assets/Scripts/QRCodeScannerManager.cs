@@ -66,7 +66,7 @@ public class QRCodeScannerManager : MonoBehaviour
             string payload = trackable.MarkerPayloadString;
             GameObject container = new GameObject(payload);
             container.transform.position = trackable.transform.position;
-            string url = $"http://192.168.0.138:8080/api/models/{payload}";
+            string url = $"http://10.89.127.16:8080/api/models/{payload}";
             Debug.LogWarning($"Requesting model at {url}");
             long startTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             Task<Model> requestModelTask = Client.Get<Model>(url);

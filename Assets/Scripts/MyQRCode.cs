@@ -8,6 +8,8 @@ using System.Linq;
 using TMPro;
 
 using UnityEngine;
+using UnityEngine.UI;
+
 public class MyQRCode : MonoBehaviour
 {
     public string PayloadText => _text.text;
@@ -29,9 +31,20 @@ public class MyQRCode : MonoBehaviour
 
     MRUKTrackable _trackable;
 
+    [SerializeField]
+    Sprite openButtonIcon;
+
+    [SerializeField]
+    Sprite closeButtonIcon;
+
+    [SerializeField]
+    Image buttonImage;
+
     bool loading = false;
 
     Model model;
+
+    bool isModelVisible = true;
 
     public void Initialize(MRUKTrackable trackable)
     {
@@ -74,7 +87,7 @@ public class MyQRCode : MonoBehaviour
     void Update(){
         if(this.model != null) {
             this._modelNameText.text = model.name;
-            this._modelDescriptionText.text = model.ToString();
+            this._modelDescriptionText.text = $"File size: {model.fileSize / (1024*1024)} MB";
         } else if(loading) {
             this._modelNameText.text = "Caricando...";
         } else {
@@ -91,4 +104,11 @@ public class MyQRCode : MonoBehaviour
         this.loading = false;
         this.model = model;
     }
+
+    public void SetModelVisible() {
+        isModelVisible = !isModelVisible;
+        buttonImage.sprite = isModelVisible ? openButtonIcon : closeButtonIcon;
+    }
+
+
 }

@@ -7,12 +7,14 @@
         <category android:name="android.intent.category.LAUNCHER" />
         <category android:name="com.oculus.intent.category.VR" />
       </intent-filter>
-      <meta-data android:name="com.oculus.vr.focusaware" android:value="true" />
     </activity>
+    <meta-data android:name="com.oculus.vr.focusaware" android:value="true" />
+    <meta-data android:name="com.oculus.ossdk.overlay_keyboard" android:value="true" />
     <meta-data android:name="unityplayer.SkipPermissionsDialog" android:value="false" />
     <meta-data android:name="com.oculus.ossplash.background" android:value="black" />
     <meta-data android:name="com.oculus.telemetry.project_guid" android:value="797c46d0-f280-473e-913f-2d685934d49e" />
     <meta-data android:name="com.oculus.supportedDevices" android:value="quest|quest2|questpro|quest3|quest3s" />
+    <meta-data android:name="com.oculus.ossdk.overlay_keyboard" android:value="true" />
   </application>
   <uses-feature android:name="android.hardware.vr.headtracking" android:version="1" android:required="true" />
   <uses-permission android:name="com.oculus.permission.USE_ANCHOR_API" />
