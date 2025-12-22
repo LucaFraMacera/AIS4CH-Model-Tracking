@@ -55,16 +55,22 @@ public class ModelInteractionManager : MonoBehaviour
         GameObject interactableWrapper = Instantiate(prefab);
         interactableWrapper.transform.position = container.transform.position;
         GameObject wrapper = interactableWrapper.transform.GetChild(0).gameObject;
-        GrabFreeTransformer transformer = wrapper.GetComponent<GrabFreeTransformer>();
         this.MakeParent(wrapper, container);
-        this.CountCollidersInModel(container);
-        this.FitColliderToBounds(wrapper);
-        //this.AddCollidersToModel(wrapper);
-        this.SetInteractions(transformer, interactions);
+        this.SetInteractions(wrapper, interactions);
+        if(interactions != null){
+            this.FitColliderToBounds(wrapper);
+        }
     }
 
-    private void SetInteractions(GrabFreeTransformer transformer, Interaction interaction) {
-        if(transformer == null || interaction == null){
+    private void SetInteractions(GameObject wrapper, Interaction interaction) {
+        GrabFreeTransformer transformer = wrapper.GetComponent<GrabFreeTransformer>();
+        if(transformer == null || interaction == null) {
+            // remove all interactions if the model doesn't have any
+            Component[] components = wrapper.GetComponents<Component>();
+            foreach (Component comp in components) {
+                if (comp is Transform) continue;
+                Destroy(comp);
+            }
             return;
         }
         TransformerUtils.RotationConstraints rotationConstraints = new TransformerUtils.RotationConstraints()
@@ -95,45 +101,6 @@ public class ModelInteractionManager : MonoBehaviour
         transformer.InjectOptionalRotationConstraints(rotationConstraints);
     }
 
-    private void CountCollidersInModel(GameObject model) {
-        Collider[] colliders = model.GetComponentsInChildren<Collider>();
-        if(GetComponent<Collider>() != null){
-            Debug.LogWarning($"Find {colliders.Length} in model");
-        } else {
-            Debug.LogWarning($"No colliders found");
-        }
-    }
-
-    private void AddCollidersToModel(GameObject wrappedModel) {
-        Renderer[] renderers = wrappedModel.GetComponentsInChildren<Renderer>();
-        foreach (Renderer renderer in renderers){
-            if (renderer is MeshRenderer) {
-                
-                MeshFilter meshFilter = renderer.gameObject.GetComponent<MeshFilter>();
-                Mesh mesh = meshFilter.mesh;
-                renderer.gameObject.AddComponent<MeshCollider>();
-                MeshCollider collider = renderer.gameObject.GetComponent<MeshCollider>();
-                collider.sharedMesh = mesh;
-                collider.convex = true;
-                collider.isTrigger = true;
-
-            } else {
-                GameObject gobj = renderer.gameObject;
-                BoxCollider collider = gobj.GetComponent<BoxCollider>(); 
-                Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
-                if (collider == null) {
-                    gobj.AddComponent<BoxCollider>();
-                    collider = gobj.GetComponent<BoxCollider>();
-                }
-                bounds.Encapsulate(renderer.bounds);
-                collider.isTrigger = true;
-                collider.center = gobj.transform.InverseTransformPoint(bounds.center);
-                collider.size = bounds.size;
-            }
-        }
-    }
-
-
     private void FitColliderToBounds(GameObject wrapperObject) {
         // Find the BoxCollider on the wrapper object
         BoxCollider boxCollider = wrapperObject.GetComponent<BoxCollider>();
@@ -156,11 +123,11 @@ public class ModelInteractionManager : MonoBehaviour
         foreach (Renderer renderer in renderers)
         {
              if (first)
-                {
-                    // Initialize the bounds with the first renderer's bounds
-                    bounds = renderer.bounds;
-                    first = false;
-                }
+            {
+                // Initialize the bounds with the first renderer's bounds
+                bounds = renderer.bounds;
+                first = false;
+            }
              // Encapsulate all subsequent renderers into the growing bounds
             bounds.Encapsulate(renderer.bounds);
         }

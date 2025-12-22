@@ -2,6 +2,7 @@ using Meta.XR.MRUtilityKit;
 using Meta.XR.Samples;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bounded2DVisualizer : MonoBehaviour
     {
@@ -49,9 +50,15 @@ public class Bounded2DVisualizer : MonoBehaviour
             _box = _trackable.PlaneRect.Value;
 
             UpdateBoundingBox();
-            UpdateModelPosition();
             UpdateCanvasPosition();
         
+        }
+
+        void OnDestroy(){
+            if(this._renderedModel != null) {
+                Debug.LogWarning("Destroying model");
+                Destroy(this._renderedModel);
+            }
         }
 
         void UpdateBoundingBox()
@@ -76,20 +83,19 @@ public class Bounded2DVisualizer : MonoBehaviour
             }
         }
 
-        void UpdateModelPosition() {
-            if(!_renderedModel || !_trackable) {
-                return;
-            }
-            if(_trackable.IsTracked && !_renderedModel.activeSelf) {  
-                _renderedModel.SetActive(true);
+        public void HideModel() {
+            if(_renderedModel != null) {
+                _renderedModel.SetActive(!_renderedModel.activeSelf);
             }
         }
 
-        public void HideModel() {
-            _renderedModel.SetActive(false);
-            _lineRenderer.gameObject.SetActive(false);
-            _canvasRect.gameObject.SetActive(false);
-            qrCodeCenter.SetActive(false);
+        public void HideVisualizer(){
+            if(_renderedModel != null) {
+                _renderedModel.SetActive(false);
+            }
+            this._lineRenderer.gameObject.SetActive(false);
+            this._canvasRect.gameObject.SetActive(false);
+            this.qrCodeCenter.SetActive(false);
         }
 
         public void SetModel(GameObject model) {
