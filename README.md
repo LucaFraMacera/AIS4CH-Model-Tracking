@@ -9,16 +9,25 @@ Be sure to create a Unity account and have a Unity ID. Follow the instruction he
 Be sure to have a Meta account as it's necessary to use the Meta Quest 3 device.
 
 After cloning the repository and opening it in the Unity Editor be sure to have the following packages installed:
-- Meta XR core SDK v78 or higher (from the Unity Asset Store)
+- Meta XR Core SDK v78 or higher (from the Unity Asset Store)
 - Meta XR Utility Kit v78 or higher (from the Unity Asset Store)
-- OpenXR Plugin v1.10.0 or higher (from the Unity Package Manager)
-- Unity glTFast v6.14.1 (from the Unity Package Manager by searching the name "com.unity.cloud.gltfast")
+- Unity glTFast v6.14.1 or higher (from the Unity Package Manager by searching the name "com.unity.cloud.gltfast")
 
 If all the packages are correctly imported, be sure to fix all the build validation error by going Edit > Project Settings > Project Validation and clicking Fix All.
 
 In the same window, go to the XR Plug-in Management. Activate OpenXR and check Meta XR feature group (both pc and android settings)
 
 Finally make sure to switch the build platform from PC to Android.
+
+## Package versions
+- Meta XR Core SDK v83.0.0
+- Meta XR Utility Kit v83.0.0
+- Meta XR Audio SDK v83.0.0
+- Meta XR Void SDK v83.0.0
+- Meta XR Haptics SDK v83.0.0
+- Meta XR Interaction SDK v83.0.0
+- Meta XR Platform SDK v83.0.0
+- Unity glTFast v6.14.1
 
 ## Running the application
 The standard way of running the application is by building from File > Build Settings > Build (make sure to select the scene called "MainScene") and installing the .apk result file in the device.

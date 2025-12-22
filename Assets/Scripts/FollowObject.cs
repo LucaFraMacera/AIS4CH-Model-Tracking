@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FollowObject : MonoBehaviour
 {
@@ -16,13 +17,12 @@ public class FollowObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(objectToFollow.transform.position == Vector3.zero && OVRManager.hasInputFocus) {
+        if(objectToFollow.transform.position == Vector3.zero) {
             return;
         }
         Debug.LogWarning(OVRManager.hasInputFocus);
