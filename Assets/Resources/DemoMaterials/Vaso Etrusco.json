@@ -1,0 +1,15 @@
+{
+    "id": 6,
+    "name": "Vaso etrusco",
+    "xOffset": 0,
+    "yOffset": 0.3,
+    "zOffset": 0,
+    "interaction": {
+      "rotateX": true,
+      "rotateY": true,
+      "rotateZ": true,
+      "transformX": true,
+      "transformY": true,
+      "transformZ": true
+    }
+  }

@@ -16,6 +16,10 @@ public class Interaction {
 
     public bool transformZ;
 
+    public bool isEmpty() {
+        return !rotateX && !rotateZ && !rotateY && !transformX && !transformY && !transformZ;
+    }
+
     override public string ToString(){
         return $"Rotation= X:{rotateX}, Y:{rotateY}, Z:{rotateZ}; Transform = X:{transformX}, Y:{transformY}, Z:{transformZ}";
     }

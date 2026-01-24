@@ -1,0 +1,15 @@
+{
+    "id": 7,
+    "name": "Spada da cavaliere",
+    "xOffset": 1,
+    "yOffset": 0.3,
+    "zOffset": 0.5,
+    "interaction": {
+      "rotateX": true,
+      "rotateY": true,
+      "rotateZ": true,
+      "transformX": true,
+      "transformY": true,
+      "transformZ": true
+    }
+  }

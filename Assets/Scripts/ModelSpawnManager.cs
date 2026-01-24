@@ -59,6 +59,7 @@ public class ModelSpawnManager : MonoBehaviour
 
     public IEnumerator RenderModel(Model model, GameObject container){
         Debug.LogWarning("Starting to render model");
+        container.transform.position = container.transform.position + new Vector3(model.xOffset, model.yOffset, model.zOffset);
         byte[] content = Convert.FromBase64String(model.base64Content);
         long renderStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         GameObject preview = Instantiate(modelPreviewPrefab, container.transform);

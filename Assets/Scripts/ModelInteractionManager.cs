@@ -56,10 +56,11 @@ public class ModelInteractionManager : MonoBehaviour
         interactableWrapper.transform.position = container.transform.position;
         GameObject wrapper = interactableWrapper.transform.GetChild(0).gameObject;
         this.MakeParent(wrapper, container);
-        this.SetInteractions(wrapper, interactions);
-        if(interactions != null){
-            this.FitColliderToBounds(wrapper);
+        if(interactions == null || interactions.isEmpty()) {
+            return;
         }
+        this.SetInteractions(wrapper, interactions);
+        this.FitColliderToBounds(wrapper);
     }
 
     private void SetInteractions(GameObject wrapper, Interaction interaction) {
