@@ -47,3 +47,28 @@ In the Meta Quest Developer Hub go to Settings > Beta Version and make sure to e
 
 Once all is setup, from the Meta Quest 3 settings, activate Meta Link (either by wire or wireless communication). This will take you to a dedicated virtual area where you can check you PC monitors. From there run the Unity application by clikcing the run button in the editor
 
+# Application Releases
+
+## Standard Release
+Currently the repository has 2 'versions' of the same application. The first one in the `main` branch is the standard version. It relies on an external CMS that stores and delivers the model's metadata and 3D assets.
+
+To run this version first start the CMS by running in the console:
+```bash
+java -jar MockCMS.jar
+```
+The springboot application will start listening for request on the port 8080. You can check out the swagger documentation at this URL: `http://localhost:8080/swagger-ui/index.html`
+
+In the Meta Quest application you can access a special **IP Address UI Panel** by looking at your left wrist. Here you can enter the IP address of the MockCMS so that the mobile application can always communicate with the CMS.
+
+If you start the Meta Quest application directly in Unity using Meta Horizon Link, then make sure to put your localhost address in the IP Address UI Panel.
+
+On the other hand if you start the application on the Meta Quest after building the APK, then set the IP address of the device where the MockCMS is running.
+
+## Alternative Version
+If you checkout to the `cms-less-version` branch then you can access the alternative version of the application that doesn't rely on an external CMS application. 
+
+The models are all stored in the APK itself (you can check them in the `Assets/Resources/DemoMaterials` folder)
+
+You can run the application as is (by building the APK or using Meta Horizon Link) without entering any IPs or starting any secondary application.
+
+
