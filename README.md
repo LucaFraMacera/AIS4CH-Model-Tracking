@@ -19,8 +19,8 @@ As of version 83 of the Meta SDK the QR code tracking feature is no longer an ex
 
 If all the packages are correctly imported, be sure to fix all the build validation error by going Edit > Project Settings > Project Validation and clicking Fix All.
 
-In the same window, go to the XR Plug-in Management. Activate OpenXR and check Meta XR feature group (both pc and android settings)
-
+In the same window, go to the XR Plug-in Management. Check the `Oculus` option for all platforms. \
+**DO NOT USE OPEN XR** \
 Finally make sure to switch the build platform from PC to Android.
 
 
