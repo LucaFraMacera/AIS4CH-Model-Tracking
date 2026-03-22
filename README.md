@@ -26,7 +26,7 @@ Finally make sure to switch the build platform from PC to Android.
 
 ## Package versions
 - Meta XR Core SDK v83.0.0
-- Meta XR Utility Kit v83.0.0
+- Meta XR MR Utility Kit v83.0.0
 - Meta XR Audio SDK v83.0.0
 - Meta XR Void SDK v83.0.0
 - Meta XR Haptics SDK v83.0.0
