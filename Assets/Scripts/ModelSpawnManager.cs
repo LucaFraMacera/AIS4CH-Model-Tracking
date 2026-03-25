@@ -59,10 +59,9 @@ public class ModelSpawnManager : MonoBehaviour
 
     public IEnumerator RenderModel(Model model, GameObject container){
         Debug.LogWarning("Starting to render model");
-        byte[] content = Convert.FromBase64String(model.base64Content);
         long renderStartTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         GameObject preview = Instantiate(modelPreviewPrefab, container.transform);
-        Task<bool> renderModelTask = GLTFHandler.Instantiate(content, container);
+        Task<bool> renderModelTask = GLTFHandler.Instantiate(model.presignedUrl, container);
         yield return new WaitUntil(()=>renderModelTask.IsCompleted);
         Destroy(preview);
         long renderTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - renderStartTime;

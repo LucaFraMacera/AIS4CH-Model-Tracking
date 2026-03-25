@@ -13,7 +13,9 @@ public class IpPanelScript : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {}
+    {
+        ipInput.text = "192.168.1.12";
+    }
     // Update is called once per frame
     void Update(){
         ipText.text = ClientManager.IP;

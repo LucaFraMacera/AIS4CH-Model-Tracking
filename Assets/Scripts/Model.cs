@@ -37,7 +37,7 @@ public class Model{
 
     public long fileSize;
 
-    public string base64Content;
+    public string presignedUrl;
 
     public Interaction interaction;
 
